@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
             navPonies: "Nuestros Ponis",
             navBenefits: "Beneficios",
             navGallery: "Nuestro Plantel",
+            navPadrillos: "Padrillos",
+            navMadres: "Madres",
+            navGeneraciones: "Nuevas Generaciones",
             navContact: "Contacto",
             heroTitle: "Cabaña SHR: El comienzo de una gran amistad.",
             heroCTA: "Contactános",
@@ -46,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
             navPonies: "Our Ponies",
             navBenefits: "Benefits",
             navGallery: "Our Herd",
+            navPadrillos: "Stallions",
+            navMadres: "Mares",
+            navGeneraciones: "New Generations",
             navContact: "Contact",
             heroTitle: "Cabaña SHR: The beginning of a great friendship.",
             heroCTA: "Contact Us",
@@ -85,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             navPonies: "Nossos Pôneis",
             navBenefits: "Benefícios",
             navGallery: "Nosso Plantel",
+            navPadrillos: "Garanhões",
+            navMadres: "Matrizes",
+            navGeneraciones: "Novas Gerações",
             navContact: "Contato",
             heroTitle: "Cabaña SHR: O começo de uma grande amizade.",
             heroCTA: "Contate-nos",
@@ -135,7 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-key]').forEach(elem => {
             const key = elem.getAttribute('data-key');
             if (translations[lang][key]) {
-                elem.textContent = translations[lang][key];
+                const icon = elem.querySelector('i');
+                if (icon) {
+                    elem.childNodes[0].textContent = translations[lang][key] + ' ';
+                } else {
+                    elem.textContent = translations[lang][key];
+                }
             }
         });
 
@@ -171,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('language') || 'es';
     setLanguage(savedLang);
 
-    // --- MENÚ NAVEGACIÓN Y SCROLL SUAVE ---
+    // --- MENÚ NAVEGACIÓN Y DROPDOWN ---
     const menuToggle = document.getElementById('mobile-menu');
     const navMenu = document.querySelector('.nav-menu');
     const scrollLinks = document.querySelectorAll('.nav-links a, .cta-button, .logo');
@@ -188,29 +202,113 @@ document.addEventListener('DOMContentLoaded', () => {
         menuToggle.addEventListener('click', () => toggleMenu());
     }
 
-    // Cerrar menú con tecla Escape
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
-            toggleMenu(false);
-            if (menuToggle) menuToggle.focus();
+    // Toggle submenú desplegable (Escritorio y Móvil)
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const navDropdown = document.querySelector('.nav-item-dropdown');
+
+    const toggleDropdown = (state) => {
+        if (!navDropdown || !dropdownToggle) return;
+        const isActive = state !== undefined ? state : !navDropdown.classList.contains('active');
+        navDropdown.classList.toggle('active', isActive);
+        dropdownToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+    };
+
+    if (dropdownToggle && navDropdown) {
+        dropdownToggle.addEventListener('click', (e) => {
+            // Prevenir acción por defecto y alternar submenú
+            e.preventDefault();
+            toggleDropdown();
+        });
+    }
+
+    // Cierre interactivo al hacer clic fuera del submenú (Click-outside)
+    document.addEventListener('click', (e) => {
+        if (navDropdown && navDropdown.classList.contains('active')) {
+            if (!navDropdown.contains(e.target)) {
+                toggleDropdown(false);
+            }
         }
     });
 
-    // Desplazamiento suave (Smooth scroll) y cierre del menú
+    // Desplazamiento suave (Smooth scroll) y cierre de menús
     scrollLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
             if (href && href.startsWith('#')) {
-                e.preventDefault();
                 const targetId = href.substring(1);
                 const targetSection = document.getElementById(targetId);
                 if (targetSection) {
+                    e.preventDefault();
                     targetSection.scrollIntoView({ behavior: 'smooth' });
+                    
                     if (navMenu.classList.contains('active')) {
                         toggleMenu(false);
+                    }
+                    if (navDropdown && navDropdown.classList.contains('active')) {
+                        toggleDropdown(false);
                     }
                 }
             }
         });
+    });
+
+    // --- VISOR DE IMÁGENES EN GRANDE (LIGHTBOX MODAL) ---
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxOverlay = document.querySelector('.lightbox-overlay');
+
+    const openLightbox = (imgSrc, captionText, altText) => {
+        if (!lightbox || !lightboxImg) return;
+        lightboxImg.src = imgSrc;
+        lightboxImg.alt = altText || captionText || 'Poni Shetland';
+        lightboxCaption.textContent = captionText || '';
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+        if (lightboxCloseBtn) lightboxCloseBtn.focus();
+    };
+
+    const closeLightbox = () => {
+        if (!lightbox) return;
+        lightbox.classList.remove('active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        setTimeout(() => {
+            if (lightboxImg) lightboxImg.src = '';
+        }, 300);
+    };
+
+    const gallerySection = document.getElementById('galeria');
+    if (gallerySection) {
+        gallerySection.addEventListener('click', (e) => {
+            const card = e.target.closest('.gallery-card');
+            if (card) {
+                const img = card.querySelector('img');
+                const figcaption = card.querySelector('figcaption');
+                if (img) {
+                    const imgSrc = img.src;
+                    const captionText = figcaption ? figcaption.textContent : '';
+                    const altText = img.alt || '';
+                    openLightbox(imgSrc, captionText, altText);
+                }
+            }
+        });
+    }
+
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+    if (lightboxOverlay) lightboxOverlay.addEventListener('click', closeLightbox);
+
+    // Tecla Escape para cerrar Lightbox o Menú Móvil
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (lightbox && lightbox.classList.contains('active')) {
+                closeLightbox();
+            } else if (navMenu && navMenu.classList.contains('active')) {
+                toggleMenu(false);
+                if (menuToggle) menuToggle.focus();
+            }
+        }
     });
 });

@@ -1,0 +1,158 @@
+{
+  "padrillos": [
+    {
+      "path": "assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg",
+      "name": "BB Tropero (Cabron) 2667",
+      "raw": "Padrillo - BB Tropero (Cabron) 2667.jpg"
+    },
+    {
+      "path": "assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg",
+      "name": "SHR Timoteo 2820",
+      "raw": "Padrillo - SHR Timoteo 2820.jpg"
+    }
+  ],
+  "madres": [
+    {
+      "path": "assets/images/madres/Madre - Brissa 2577.jpg",
+      "name": "Brissa 2577",
+      "raw": "Madre - Brissa 2577.jpg"
+    },
+    {
+      "path": "assets/images/madres/Madre - Canela 2598.jpg",
+      "name": "Canela 2598",
+      "raw": "Madre - Canela 2598.jpg"
+    },
+    {
+      "path": "assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg",
+      "name": "Mi Querencia Tigra 2703",
+      "raw": "Madre - Mi Querencia Tigra 2703.jpg"
+    },
+    {
+      "path": "assets/images/madres/Madre - Pulga 2583-2.jpg",
+      "name": "Pulga 2583-2",
+      "raw": "Madre - Pulga 2583-2.jpg"
+    },
+    {
+      "path": "assets/images/madres/Madre - SF Lili 2500.jpg",
+      "name": "SF Lili 2500",
+      "raw": "Madre - SF Lili 2500.jpg"
+    }
+  ],
+  "generaciones": {
+    "20": [
+      {
+        "path": "assets/images/generaciones/20/Gen20 - SHR Julieta 2504.jpg",
+        "name": "SHR Julieta 2504",
+        "raw": "Gen20 - SHR Julieta 2504.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/20/Gen20 - SHR Julieta 2505.jpg",
+        "name": "SHR Julieta 2505",
+        "raw": "Gen20 - SHR Julieta 2505.jpg"
+      }
+    ],
+    "21": [
+      {
+        "path": "assets/images/generaciones/21/Gen21 - SHR Bonita 2512-2.jpg",
+        "name": "SHR Bonita 2512-2",
+        "raw": "Gen21 - SHR Bonita 2512-2.jpg"
+      }
+    ],
+    "23": [
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg",
+        "name": "SHR Barbie 2757",
+        "raw": "Gen23 - SHR Barbie 2757.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Barbie 2774.jpg",
+        "name": "SHR Barbie 2774",
+        "raw": "Gen23 - SHR Barbie 2774.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Carminha 2851.jpg",
+        "name": "SHR Carminha 2851",
+        "raw": "Gen23 - SHR Carminha 2851.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Carminha 2873.jpg",
+        "name": "SHR Carminha 2873",
+        "raw": "Gen23 - SHR Carminha 2873.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Coqueta 2539.jpg",
+        "name": "SHR Coqueta 2539",
+        "raw": "Gen23 - SHR Coqueta 2539.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Coqueta 2542-2.jpg",
+        "name": "SHR Coqueta 2542-2",
+        "raw": "Gen23 - SHR Coqueta 2542-2.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/23/Gen23 - SHR Lola 2527.jpg",
+        "name": "SHR Lola 2527",
+        "raw": "Gen23 - SHR Lola 2527.jpg"
+      }
+    ],
+    "24": [
+      {
+        "path": "assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg",
+        "name": "SHR Canelon 2784",
+        "raw": "Gen24 - SHR Canelon 2784.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/24/Gen24 - SHR Canelon 2800.jpg",
+        "name": "SHR Canelon 2800",
+        "raw": "Gen24 - SHR Canelon 2800.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/24/Gen24 - SHR Pacifico 2735.jpg",
+        "name": "SHR Pacifico 2735",
+        "raw": "Gen24 - SHR Pacifico 2735.jpg"
+      }
+    ],
+    "25": [
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg",
+        "name": "SHR Barullo 2523",
+        "raw": "Gen25 - SHR Barullo 2523.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Bella 2829.jpg",
+        "name": "SHR Bella 2829",
+        "raw": "Gen25 - SHR Bella 2829.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Benito 2567-2.jpg",
+        "name": "SHR Benito 2567-2",
+        "raw": "Gen25 - SHR Benito 2567-2.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Corina 2626.jpg",
+        "name": "SHR Corina 2626",
+        "raw": "Gen25 - SHR Corina 2626.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Lucrecia 2490-2.jpg",
+        "name": "SHR Lucrecia 2490-2",
+        "raw": "Gen25 - SHR Lucrecia 2490-2.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Toribio 2669.jpg",
+        "name": "SHR Toribio 2669",
+        "raw": "Gen25 - SHR Toribio 2669.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg",
+        "name": "SHR Toscana 2553",
+        "raw": "Gen25 - SHR Toscana 2553.jpg"
+      },
+      {
+        "path": "assets/images/generaciones/25/Gen25 - SHR Toscana 2555.jpg",
+        "name": "SHR Toscana 2555",
+        "raw": "Gen25 - SHR Toscana 2555.jpg"
+      }
+    ]
+  }
+}

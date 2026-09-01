@@ -85,7 +85,14 @@
                         <li><a href="#inicio" data-key="navHome">Inicio</a></li>
                         <li><a href="#nuestros-ponis" data-key="navPonies">Nuestros Ponis</a></li>
                         <li><a href="#beneficios" data-key="navBenefits">Beneficios</a></li>
-                        <li><a href="#galeria" data-key="navGallery">Nuestro Plantel</a></li>
+                        <li class="nav-item-dropdown">
+                            <a href="#galeria" class="dropdown-toggle" aria-expanded="false" aria-haspopup="true" data-key="navGallery">Nuestro Plantel <i class="fas fa-chevron-down dropdown-icon" aria-hidden="true"></i></a>
+                            <ul class="dropdown-menu" aria-label="Submenú Nuestro Plantel">
+                                <li><a href="#padrillos" data-key="navPadrillos">Padrillos</a></li>
+                                <li><a href="#madres" data-key="navMadres">Madres</a></li>
+                                <li><a href="#generaciones" data-key="navGeneraciones">Nuevas Generaciones</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#contacto" data-key="navContact">Contacto</a></li>
                     </ul>
                 </nav>
@@ -153,48 +160,146 @@
                 </p>
 
                 <!-- Categoría: Padrillos -->
-                <h3 class="category-title" data-key="padrillosTitle">Nuestros Padrillos</h3>
+                <h3 id="padrillos" class="category-title" data-key="padrillosTitle">Nuestros Padrillos</h3>
                 <p class="category-desc" data-key="padrillosDesc">La base de nuestra excelencia genética. Seleccionamos a nuestros padrillos no solo por su impecable conformación física y pureza racial, sino por su temperamento equilibrado. Sabemos que el carácter se hereda, por lo que nuestros sementales son el primer sello de garantía de que obtendrás un poni noble, dócil y seguro.</p>
                 <div class="gallery-grid">
-                    <div class="gallery-card">
-                        <img src="padrillo_1.jpg" alt="Padrillo Shetland pony de gran conformación genética en Cabaña SHR Uruguay" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="padrillo_2.jpg" alt="Padrillo Poni Shetland de pelaje destacado en Silver Horse Ranch" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="padrillo_3.jpg" alt="Padrillo Shetland reproductor de temperamento dócil y noble" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
+                    <figure class="gallery-card">
+                        <img src="assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg" alt="Padrillo BB Tropero (Cabron) - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>BB Tropero (Cabron)</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg" alt="Padrillo SHR Timoteo - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Timoteo</figcaption>
+                    </figure>
                 </div>
 
                 <!-- Categoría: Madres -->
-                <h3 class="category-title" data-key="madresTitle">Nuestras Madres</h3>
+                <h3 id="madres" class="category-title" data-key="madresTitle">Nuestras Madres</h3>
                 <p class="category-desc" data-key="madresDesc">El corazón de nuestra cabaña. Nuestras yeguas crían a sus potrillos en entornos amplios y naturales, respetando las normativas de bienestar animal (INBA/MGAP). Seleccionamos madres con un instinto maternal excepcional y una naturaleza pacífica, proporcionando el entorno emocional perfecto para que crezcan confiados.</p>
                 <div class="gallery-grid">
-                    <div class="gallery-card">
-                        <img src="madre_1.jpg" alt="Yegua madre Shetland pony con potrillo en pastoreo en Canelón Chico" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="madre_2.jpg" alt="Yegua madre de raza Shetland seleccionada por su temperamento pacífico" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="madre_3.jpg" alt="Madre Poni Shetland en pradera natural de Cabaña SHR" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
+                    <figure class="gallery-card">
+                        <img src="assets/images/madres/Madre - Brissa 2577.jpg" alt="Yegua Madre Brissa - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>Brissa</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/madres/Madre - Canela 2598.jpg" alt="Yegua Madre Canela - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>Canela</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg" alt="Yegua Madre Mi Querencia Tigra - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>Mi Querencia Tigra</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/madres/Madre - Pulga 2583-2.jpg" alt="Yegua Madre Pulga - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>Pulga</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/madres/Madre - SF Lili 2500.jpg" alt="Yegua Madre SF Lili - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SF Lili</figcaption>
+                    </figure>
                 </div>
 
                 <!-- Categoría: Generaciones -->
-                <h3 class="category-title" data-key="generacionesTitle">Nuevas Generaciones</h3>
+                <h3 id="generaciones" class="category-title" data-key="generacionesTitle">Nuevas Generaciones</h3>
                 <p class="category-desc" data-key="generacionesDesc">El resultado de nuestra pasión. Desde sus primeros días, nuestros potrillos reciben un manejo ético y una socialización temprana. Canalizamos su inteligencia natural mediante métodos positivos para entregar compañeros a prueba de niños y co-terapeutas fiables. Aquí puedes ver el futuro de SHR.</p>
+                <h4 class="sub-category-title">Generación 2025</h4>
                 <div class="gallery-grid">
-                    <div class="gallery-card">
-                        <img src="generacion_1.jpg" alt="Potrillo Shetland dócil en proceso de socialización temprana" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="generacion_2.jpg" alt="Nuevas generaciones de ponis Shetland para iniciación ecuestre infantil" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
-                    <div class="gallery-card">
-                        <img src="generacion_3.jpg" alt="Potrillo Shetland de Cabaña SHR criado en entorno amplio y seguro" loading="lazy" decoding="async" width="600" height="400">
-                    </div>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg" alt="Potrillo Gen 2025 SHR Barullo - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Barullo</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Bella 2829.jpg" alt="Potrillo Gen 2025 SHR Bella - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Bella</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Benito 2567-2.jpg" alt="Potrillo Gen 2025 SHR Benito - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Benito</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Corina 2626.jpg" alt="Potrillo Gen 2025 SHR Corina - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Corina</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Lucrecia 2490-2.jpg" alt="Potrillo Gen 2025 SHR Lucrecia - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Lucrecia</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Toribio 2669.jpg" alt="Potrillo Gen 2025 SHR Toribio - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Toribio</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg" alt="Potrillo Gen 2025 SHR Toscana - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Toscana</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Toscana 2555.jpg" alt="Potrillo Gen 2025 SHR Toscana - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Toscana</figcaption>
+                    </figure>
+                </div>
+                <h4 class="sub-category-title">Generación 2024</h4>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg" alt="Potrillo Gen 2024 SHR Canelon - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Canelon</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/24/Gen24 - SHR Canelon 2800.jpg" alt="Potrillo Gen 2024 SHR Canelon - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Canelon</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/24/Gen24 - SHR Pacifico 2735.jpg" alt="Potrillo Gen 2024 SHR Pacifico - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Pacifico</figcaption>
+                    </figure>
+                </div>
+                <h4 class="sub-category-title">Generación 2023</h4>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg" alt="Potrillo Gen 2023 SHR Barbie - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Barbie</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Barbie 2774.jpg" alt="Potrillo Gen 2023 SHR Barbie - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Barbie</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Carminha 2851.jpg" alt="Potrillo Gen 2023 SHR Carminha - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Carminha</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Carminha 2873.jpg" alt="Potrillo Gen 2023 SHR Carminha - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Carminha</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Coqueta 2539.jpg" alt="Potrillo Gen 2023 SHR Coqueta - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Coqueta</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Coqueta 2542-2.jpg" alt="Potrillo Gen 2023 SHR Coqueta - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Coqueta</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/23/Gen23 - SHR Lola 2527.jpg" alt="Potrillo Gen 2023 SHR Lola - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Lola</figcaption>
+                    </figure>
+                </div>
+                <h4 class="sub-category-title">Generación 2021</h4>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/21/Gen21 - SHR Bonita 2512-2.jpg" alt="Potrillo Gen 2021 SHR Bonita - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Bonita</figcaption>
+                    </figure>
+                </div>
+                <h4 class="sub-category-title">Generación 2020</h4>
+                <div class="gallery-grid">
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/20/Gen20 - SHR Julieta 2504.jpg" alt="Potrillo Gen 2020 SHR Julieta - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Julieta</figcaption>
+                    </figure>
+                    <figure class="gallery-card">
+                        <img src="assets/images/generaciones/20/Gen20 - SHR Julieta 2505.jpg" alt="Potrillo Gen 2020 SHR Julieta - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <figcaption>SHR Julieta</figcaption>
+                    </figure>
                 </div>
             </div>
         </section>
@@ -255,5 +360,18 @@
 
     <!-- Scripts de la Aplicación -->
     <script src="js/script.js" defer></script>
+
+    <!-- Lightbox Modal para Fotos de la Galería -->
+    <div id="image-lightbox" class="lightbox-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Visor de imagen">
+        <div class="lightbox-overlay"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-close" id="lightbox-close-btn" aria-label="Cerrar visor">&times;</button>
+            <figure class="lightbox-content">
+                <img id="lightbox-img" src="" alt="">
+                <figcaption id="lightbox-caption"></figcaption>
+            </figure>
+        </div>
+    </div>
+
 </body>
 </html>
