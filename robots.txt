@@ -1,0 +1,5 @@
+# Robots.txt para shrshetlandpony.com - Cabaña SHR
+User-agent: *
+Allow: /
+
+Sitemap: https://shrshetlandpony.com/sitemap.xml
