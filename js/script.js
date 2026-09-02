@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Declaraciones de estado global para visor modal y lenguaje
+    let lightbox = null;
+    let currentCategoryCards = [];
+    let currentCardIndex = -1;
+    let updateLightboxContent = () => {};
+
     // --- DICCIONARIO DE TRADUCCIONES ---
     const translations = {
         es: {
@@ -42,7 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessage: "Tu Mensaje",
             formButton: "Enviar Consulta",
             footerText: "© 2019 Cabaña SHR. Todos los derechos reservados.",
-            verFicha: "Ver ficha"
+            verFicha: "Ver ficha",
+            enVenta: "En Venta",
+            consultarEjemplar: "Consultar por este ejemplar",
+            gen2025Title: "Generación 2025",
+            gen2024Title: "Generación 2024",
+            gen2023Title: "Generación 2023",
+            gen2021Title: "Generación 2021",
+            gen2020Title: "Generación 2020",
+            labelNacimiento: "Nacimiento:",
+            labelRp: "RP:",
+            labelSexo: "Sexo:",
+            labelHbu: "HBU (ARU):",
+            labelPelo: "Pelaje:",
+            btnAru: "Ver Registro Oficial en ARU",
+            unregistered: "Ejemplar no inscripto",
+            pendingData: "Ficha técnica en proceso de registro"
         },
         en: {
             pageTitle: "Cabaña SHR - Shetland Pony Breeding in Uruguay",
@@ -73,6 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
             madresDesc: "The heart of our ranch. Our mares raise their foals in spacious and natural environments, respecting animal welfare regulations. We select mares with exceptional maternal instincts and a peaceful nature, providing the perfect emotional environment for them to grow confident.",
             generacionesTitle: "New Generations",
             generacionesDesc: "The result of our passion. From their first days, our foals receive ethical handling and early socialization. We channel their natural intelligence through positive methods to deliver child-proof companions and reliable co-therapists. Here you can see the future of SHR.",
+            gen2025Title: "2025 Generation",
+            gen2024Title: "2024 Generation",
+            gen2023Title: "2023 Generation",
+            gen2021Title: "2021 Generation",
+            gen2020Title: "2020 Generation",
             contactTitle: "Let's Talk",
             contactInfoTitle: "Contact Information",
             contactInfoDesc: "We are here to answer all your questions. Do not hesitate to write or call us.",
@@ -85,7 +111,17 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessage: "Your Message",
             formButton: "Send Inquiry",
             footerText: "© 2019 Cabaña SHR. All rights reserved.",
-            verFicha: "View details"
+            verFicha: "View details",
+            enVenta: "For Sale",
+            consultarEjemplar: "Inquire about this pony",
+            labelNacimiento: "Birth Date:",
+            labelRp: "Private Reg. (RP):",
+            labelSexo: "Sex:",
+            labelHbu: "Official Reg. (HBU):",
+            labelPelo: "Coat Color:",
+            btnAru: "View Official Pedigree (ARU)",
+            unregistered: "Unregistered specimen",
+            pendingData: "Technical registration in progress"
         },
         pt: {
             pageTitle: "Cabaña SHR - Criação de Pôneis Shetland no Uruguai",
@@ -116,6 +152,11 @@ document.addEventListener('DOMContentLoaded', () => {
             madresDesc: "O coração da nossa cabanha. Nossas éguas criam seus potros em ambientes amplos e naturais, respeitando as normas de bem-estar animal. Selecionamos matrizes com instinto maternal excepcional e natureza pacífica, proporcionando o ambiente emocional perfeito para que cresçam confiantes.",
             generacionesTitle: "Novas Gerações",
             generacionesDesc: "O resultado da nossa paixão. Desde os primeiros dias, nossos potros recebem manejo ético e socialização precoce. Canalizamos sua inteligência natural através de métodos positivos para entregar companheiros à prova de crianças e co-terapeutas confiáveis. Aqui você pode ver o futuro da SHR.",
+            gen2025Title: "Geração 2025",
+            gen2024Title: "Geração 2024",
+            gen2023Title: "Geração 2023",
+            gen2021Title: "Geração 2021",
+            gen2020Title: "Geração 2020",
             contactTitle: "Vamos Conversar",
             contactInfoTitle: "Informações de Contato",
             contactInfoDesc: "Estamos aqui para responder a todas as suas perguntas. Não hesite em nos escrever ou ligar.",
@@ -128,8 +169,61 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessage: "Sua Mensagem",
             formButton: "Enviar Consulta",
             footerText: "© 2019 Cabaña SHR. Todos os direitos reservados.",
-            verFicha: "Ver ficha"
+            verFicha: "Ver ficha",
+            enVenta: "À Venda",
+            consultarEjemplar: "Consultar sobre este pônei",
+            labelNacimiento: "Nascimento:",
+            labelRp: "RP:",
+            labelSexo: "Sexo:",
+            labelHbu: "HBU (ARU):",
+            labelPelo: "Pelagem:",
+            btnAru: "Ver Registro Oficial no ARU",
+            unregistered: "Exemplar não registrado",
+            pendingData: "Ficha técnica em processo de registro"
         }
+    };
+
+    const sexTranslations = {
+        'hembra': { es: 'Hembra', en: 'Female', pt: 'Fêmea' },
+        'macho entero': { es: 'Macho Entero', en: 'Stallion', pt: 'Macho Inteiro' },
+        'macho castrado': { es: 'Macho Castrado', en: 'Gelding', pt: 'Castrado' }
+    };
+
+    const coatTranslations = {
+        'zaino negro': { es: 'Zaino Negro', en: 'Black Bay', pt: 'Castanho Escuro' },
+        'zaino colorado': { es: 'Zaino Colorado', en: 'Red Bay', pt: 'Castanho Avermelhado' },
+        'lobuno': { es: 'Lobuno', en: 'Dun', pt: 'Lobuno' },
+        'lobuna': { es: 'Lobuna', en: 'Dun', pt: 'Lobuna' },
+        'zaino': { es: 'Zaino', en: 'Bay', pt: 'Castanho' },
+        'zaina': { es: 'Zaina', en: 'Bay', pt: 'Castanho' },
+        'tobiano zaino': { es: 'Tobiano Zaino', en: 'Bay Tobiano', pt: 'Tobiano Castanho' },
+        'oscura': { es: 'Oscura', en: 'Dark', pt: 'Escura' },
+        'oscuro': { es: 'Oscuro', en: 'Dark', pt: 'Escuro' },
+        'tobiano': { es: 'Tobiano', en: 'Tobiano', pt: 'Tobiano' },
+        'picazo': { es: 'Picazo', en: 'Black Tobiano / Picazo', pt: 'Picaço' },
+        'gateado': { es: 'Gateado', en: 'Dun', pt: 'Gateado' },
+        'gateada': { es: 'Gateada', en: 'Dun', pt: 'Gateada' },
+        'tobiano negro': { es: 'Tobiano Negro', en: 'Black Tobiano', pt: 'Tobiano Preto' },
+        'tobiano colorado': { es: 'Tobiano Colorado', en: 'Chestnut Tobiano', pt: 'Tobiano Vermelho' },
+        'zaina oscura': { es: 'Zaina Oscura', en: 'Dark Bay', pt: 'Castanho Escuro' }
+    };
+
+    const translateSex = (val, lang) => {
+        if (!val) return '';
+        const key = val.trim().toLowerCase();
+        if (sexTranslations[key] && sexTranslations[key][lang]) {
+            return sexTranslations[key][lang];
+        }
+        return val;
+    };
+
+    const translateCoat = (val, lang) => {
+        if (!val) return '';
+        const key = val.trim().toLowerCase();
+        if (coatTranslations[key] && coatTranslations[key][lang]) {
+            return coatTranslations[key][lang];
+        }
+        return val;
     };
 
     const normalizeBrandName = (name) => {
@@ -185,6 +279,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', isActive);
             btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
         });
+
+        // Si el modal está activo en pantalla, actualizarlo inmediatamente al conmutar de idioma
+        if (lightbox && lightbox.classList.contains('active') && currentCategoryCards && currentCategoryCards.length > 0 && currentCardIndex >= 0) {
+            updateLightboxContent(currentCategoryCards[currentCardIndex]);
+        }
     };
 
     if (langSwitcher) {
@@ -268,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- VISOR DE IMÁGENES EN GRANDE (LIGHTBOX MODAL CON NAVEGACIÓN POR CATEGORÍA) ---
-    const lightbox = document.getElementById('image-lightbox');
+    lightbox = document.getElementById('image-lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
     const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
@@ -276,10 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxNextBtn = document.getElementById('lightbox-next-btn');
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
 
-    let currentCategoryCards = [];
-    let currentCardIndex = -1;
-
-    const updateLightboxContent = (card) => {
+    updateLightboxContent = (card) => {
         if (!card || !lightboxImg) return;
         const img = card.querySelector('img');
         const figcaption = card.querySelector('figcaption');
@@ -300,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const valHbu = document.getElementById('modal-val-hbu');
         const valPelo = document.getElementById('modal-val-pelo');
         const aruCta = document.getElementById('modal-aru-cta');
+        const inquireCta = document.getElementById('modal-inquire-cta');
         const modalDivider = document.getElementById('modal-divider');
         const pendingNotice = document.getElementById('modal-pending-data');
 
@@ -317,20 +414,56 @@ document.addEventListener('DOMContentLoaded', () => {
             const hbu = (img.dataset.hbu || '').trim();
             const pelo = (img.dataset.pelo || '').trim();
             const aruLink = (img.dataset.aruLink || '').trim();
+            const isEnVenta = img.dataset.enVenta === 'true' || (card && card.dataset.enVenta === 'true');
+
+            const currentLang = document.documentElement.lang || 'es';
 
             lightboxImg.alt = img.alt || cleanNombre;
-            if (specimenName) specimenName.textContent = cleanNombre;
+            if (specimenName) {
+                specimenName.innerHTML = '';
+                const nameNode = document.createElement('span');
+                nameNode.textContent = cleanNombre;
+                specimenName.appendChild(nameNode);
+
+                if (isEnVenta) {
+                    const badgeSpan = document.createElement('span');
+                    badgeSpan.className = 'badge-sale modal-badge';
+                    const labelText = (translations[currentLang] && translations[currentLang].enVenta) ? translations[currentLang].enVenta : 'En Venta';
+                    badgeSpan.innerHTML = `<span class="badge-dot"></span><span data-key="enVenta">${labelText}</span>`;
+                    specimenName.appendChild(badgeSpan);
+                }
+            }
 
             const hasAruLink = Boolean(aruLink && aruLink !== '#');
             const hasDataFields = Boolean(nacimiento || rp || sexo || hbu || pelo);
 
-            if (hasDataFields || hasAruLink) {
+            if (hasDataFields || hasAruLink || isEnVenta) {
                 if (modalCard) {
                     modalCard.classList.remove('no-data');
                     modalCard.classList.add('has-data');
                 }
                 if (specimenDataPanel) specimenDataPanel.style.display = 'block';
                 if (pendingNotice) pendingNotice.style.display = 'none';
+
+                // Traducir Sexo y Pelaje
+                const translatedSexo = translateSex(sexo, currentLang);
+                const translatedPelo = translateCoat(pelo, currentLang);
+                const translatedHbu = hbu === 'Ejemplar no inscripto'
+                    ? ((translations[currentLang] && translations[currentLang].unregistered) || 'Ejemplar no inscripto')
+                    : hbu;
+
+                // Actualizar etiquetas estáticas del modal dinámicamente según idioma activo
+                const lblNac = document.querySelector('#modal-item-nacimiento .modal-data-label');
+                const lblRp = document.querySelector('#modal-item-rp .modal-data-label');
+                const lblSex = document.querySelector('#modal-item-sexo .modal-data-label');
+                const lblHbu = document.querySelector('#modal-item-hbu .modal-data-label');
+                const lblPelo = document.querySelector('#modal-item-pelo .modal-data-label');
+
+                if (lblNac && translations[currentLang]?.labelNacimiento) lblNac.textContent = translations[currentLang].labelNacimiento;
+                if (lblRp && translations[currentLang]?.labelRp) lblRp.textContent = translations[currentLang].labelRp;
+                if (lblSex && translations[currentLang]?.labelSexo) lblSex.textContent = translations[currentLang].labelSexo;
+                if (lblHbu && translations[currentLang]?.labelHbu) lblHbu.textContent = translations[currentLang].labelHbu;
+                if (lblPelo && translations[currentLang]?.labelPelo) lblPelo.textContent = translations[currentLang].labelPelo;
 
                 // Gestionar visibilidad de cada ítem de datos (ocultar etiquetas sin valor)
                 if (valNacimiento && itemNacimiento) {
@@ -351,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (valSexo && itemSexo) {
                     if (sexo) {
-                        valSexo.textContent = sexo;
+                        valSexo.textContent = translatedSexo;
                         itemSexo.style.display = 'flex';
                     } else {
                         itemSexo.style.display = 'none';
@@ -359,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (valHbu && itemHbu) {
                     if (hbu) {
-                        valHbu.textContent = hbu;
+                        valHbu.textContent = translatedHbu;
                         valHbu.classList.toggle('unregistered', hbu === 'Ejemplar no inscripto');
                         itemHbu.style.display = 'flex';
                     } else {
@@ -368,23 +501,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (valPelo && itemPelo) {
                     if (pelo) {
-                        valPelo.textContent = pelo;
+                        valPelo.textContent = translatedPelo;
                         itemPelo.style.display = 'flex';
                     } else {
                         itemPelo.style.display = 'none';
                     }
                 }
 
-                // Control condicional del botón ARU y el separador
+                // Control condicional del botón ARU, botón de consulta y el separador
+                let showDivider = false;
                 if (aruCta) {
                     if (hasAruLink) {
                         aruCta.href = aruLink;
                         aruCta.style.display = 'inline-flex';
-                        if (modalDivider) modalDivider.style.display = 'block';
+                        showDivider = true;
                     } else {
                         aruCta.style.display = 'none';
-                        if (modalDivider) modalDivider.style.display = 'none';
                     }
+                }
+
+                if (inquireCta) {
+                    if (isEnVenta) {
+                        const msg = encodeURIComponent(`Hola Cabaña SHR, quisiera consultar por el ejemplar ${cleanNombre}`);
+                        inquireCta.href = `https://wa.me/59899975886?text=${msg}`;
+                        inquireCta.style.display = 'inline-flex';
+                        showDivider = true;
+                    } else {
+                        inquireCta.style.display = 'none';
+                    }
+                }
+
+                if (modalDivider) {
+                    modalDivider.style.display = showDivider ? 'block' : 'none';
                 }
             } else {
                 // Opción A: Sin datos de pedigree -> Desactivar/eliminar panel lateral por completo

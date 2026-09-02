@@ -1177,7 +1177,7 @@ body.modal-open {
     font-size: 0.95rem;
     font-weight: 700;
     text-align: center;
-    transition: filter 0.25s ease, transform 0.25s ease;
+    transition: filter 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
 }
 
 .modal-cta-button:hover,
@@ -1185,6 +1185,85 @@ body.modal-open {
     filter: brightness(0.9);
     transform: translateY(-2px);
     color: var(--color-bg-brand);
+}
+
+/* Botón de consulta directa por WhatsApp para ejemplares en venta */
+.modal-inquire-button {
+    background-color: #25D366;
+    color: #FFFFFF;
+    margin-top: 0.6rem;
+}
+
+.modal-inquire-button:hover,
+.modal-inquire-button:focus {
+    background-color: #1EBE57;
+    color: #FFFFFF;
+    filter: brightness(0.95);
+}
+
+/* ======== DISTINTIVO BADGE "EN VENTA" ======== */
+.gallery-card {
+    position: relative;
+}
+
+.badge-sale {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 5;
+    background-color: #9E382B;
+    color: #FFFFFF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 9999px;
+    padding: 4px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    pointer-events: none;
+    line-height: 1;
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    animation: soft-pulse 2s infinite ease-in-out;
+}
+
+@keyframes soft-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.35;
+        transform: scale(0.82);
+    }
+}
+
+/* Modal Title layout con badge */
+.modal-specimen-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.modal-badge {
+    position: static;
+    font-size: 0.72rem;
+    padding: 4px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .modal-pending-data {
