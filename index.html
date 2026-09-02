@@ -218,13 +218,48 @@
                         <figcaption>SHR Benito</figcaption>
                     </figure>
                     <figure class="gallery-card">
-                        <img src="assets/images/generaciones/25/Gen25 - SHR Corina 2626.jpg" alt="Potrillo Gen 2025 SHR Corina - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
+                        <img src="assets/images/generaciones/25/Gen25 - SHR Corina 2626.jpg" 
+                             alt="Potrillo Gen 2025 SHR Corina - Cabaña SHR Poni Shetland Uruguay" 
+                             loading="lazy" decoding="async" width="600" height="400"
+                             data-nombre="SHR Corina"
+                             data-nacimiento="23/12/2025"
+                             data-rp="28"
+                             data-hbu="3411"
+                             data-pelo="Zaino"
+                             data-aru-link="https://aru.org.uy/rrgg/datos.php?IdSesion=&idFiltro=PR&id=3411&idE=3&idR=29">
                         <figcaption>SHR Corina</figcaption>
                     </figure>
-                    <figure class="gallery-card">
-                        <img src="assets/images/generaciones/25/Gen25 - SHR Lucrecia 2490-2.jpg" alt="Potrillo Gen 2025 SHR Lucrecia - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
-                        <figcaption>SHR Lucrecia</figcaption>
-                    </figure>
+                    <article class="gallery-card specimen-card">
+                        <figure class="specimen-card-image">
+                            <img src="assets/images/generaciones/25/Gen25 - SHR Lucrecia 2490-2.jpg" alt="Poni Shetland SHR Lucrecia - Ficha Técnica ARU" loading="lazy" decoding="async" width="600" height="400">
+                        </figure>
+                        <div class="specimen-card-body">
+                            <h3 class="specimen-title">SHR Lucrecia</h3>
+                            <div class="specimen-grid">
+                                <div class="specimen-data-item">
+                                    <span class="specimen-data-label">Nacimiento:</span>
+                                    <span class="specimen-data-value">27/12/2025</span>
+                                </div>
+                                <div class="specimen-data-item">
+                                    <span class="specimen-data-label">RP:</span>
+                                    <span class="specimen-data-value">30</span>
+                                </div>
+                                <div class="specimen-data-item">
+                                    <span class="specimen-data-label">HBU (ARU):</span>
+                                    <span class="specimen-data-value">3412</span>
+                                </div>
+                                <div class="specimen-data-item">
+                                    <span class="specimen-data-label">Pelaje:</span>
+                                    <span class="specimen-data-value">Tobiano Negro</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="specimen-card-footer">
+                            <a href="https://aru.org.uy/rrgg/datos.php?IdSesion=&idFiltro=PR&id=3412&idE=3&idR=29" target="_blank" rel="noopener noreferrer" class="pedigree-link">
+                                <i class="fas fa-certificate" aria-hidden="true"></i> Ver Pedigree (ARU) <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </article>
                     <figure class="gallery-card">
                         <img src="assets/images/generaciones/25/Gen25 - SHR Toribio 2669.jpg" alt="Potrillo Gen 2025 SHR Toribio - Cabaña SHR Poni Shetland Uruguay" loading="lazy" decoding="async" width="600" height="400">
                         <figcaption>SHR Toribio</figcaption>
@@ -373,10 +408,45 @@
             <button class="lightbox-nav lightbox-next" id="lightbox-next-btn" aria-label="Imagen siguiente">
                 <i class="fas fa-chevron-right" aria-hidden="true"></i>
             </button>
-            <figure class="lightbox-content">
-                <img id="lightbox-img" src="" alt="">
-                <figcaption id="lightbox-caption"></figcaption>
-            </figure>
+            <!-- Modal Card Split Layout -->
+            <div class="modal-card" id="modal-card">
+                <!-- Columna Izquierda: Fotografía -->
+                <div class="modal-card-media">
+                    <img id="lightbox-img" src="" alt="">
+                </div>
+
+                <!-- Columna Derecha: Panel de Información -->
+                <div class="modal-card-info" id="modal-card-info">
+                    <h2 class="modal-specimen-name" id="modal-specimen-name"></h2>
+                    <figcaption id="lightbox-caption" class="modal-caption-fallback"></figcaption>
+
+                    <!-- Panel de Datos Genealógicos ARU -->
+                    <div class="modal-specimen-data" id="modal-specimen-data">
+                        <div class="modal-grid">
+                            <div class="modal-data-item">
+                                <span class="modal-data-label">Nacimiento:</span>
+                                <span class="modal-data-value" id="modal-val-nacimiento">-</span>
+                            </div>
+                            <div class="modal-data-item">
+                                <span class="modal-data-label">RP:</span>
+                                <span class="modal-data-value" id="modal-val-rp">-</span>
+                            </div>
+                            <div class="modal-data-item">
+                                <span class="modal-data-label">HBU (ARU):</span>
+                                <span class="modal-data-value" id="modal-val-hbu">-</span>
+                            </div>
+                            <div class="modal-data-item">
+                                <span class="modal-data-label">Pelaje:</span>
+                                <span class="modal-data-value" id="modal-val-pelo">-</span>
+                            </div>
+                        </div>
+                        <hr class="modal-divider">
+                        <a href="#" id="modal-aru-cta" target="_blank" rel="noopener noreferrer" class="modal-cta-button">
+                            <i class="fas fa-certificate" aria-hidden="true"></i> Ver Registro Oficial en ARU <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

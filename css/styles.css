@@ -419,6 +419,124 @@ img {
     border-top: 1px solid var(--color-identity);
 }
 
+/* ======== FICHA TÉCNICA DEL EJEMPLAR (SPECIMEN CARD PoC) ======== */
+.gallery-card.specimen-card {
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-identity);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(61, 43, 31, 0.05);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-card.specimen-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(61, 43, 31, 0.1);
+}
+
+.specimen-card .specimen-card-image {
+    margin: 0;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--color-bg-brand);
+}
+
+.specimen-card .specimen-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    border-radius: 0;
+    transition: transform 0.4s ease;
+}
+
+.specimen-card:hover .specimen-card-image img {
+    transform: scale(1.05);
+}
+
+.specimen-card-body {
+    padding: 1.25rem 1.25rem 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.specimen-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-bg-brand);
+}
+
+.specimen-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.specimen-data-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.specimen-data-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.15rem;
+}
+
+.specimen-data-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.specimen-card-footer {
+    padding: 0.85rem 1.25rem;
+    background-color: var(--color-bg-brand);
+    border-top: 1px solid var(--color-identity);
+    margin-top: auto;
+}
+
+.pedigree-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    background-color: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
+    border-radius: 6px;
+    font-family: var(--font-headings);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: center;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.pedigree-link:hover,
+.pedigree-link:focus {
+    background-color: var(--color-secondary);
+    color: var(--color-bg-brand);
+    border-color: var(--color-secondary);
+}
+
+.pedigree-link i {
+    font-size: 0.85rem;
+}
+
 .category-title {
     margin-top: 3.5rem; 
     margin-bottom: 0.8rem; 
@@ -848,38 +966,177 @@ body.modal-open {
     transform: scale(1.15);
 }
 
-.lightbox-content {
-    margin: 0;
-    background-color: #1a1a1a;
-    border-radius: 8px;
+/* ======== MODAL CARD (SPLIT LAYOUT) ======== */
+.modal-card {
+    background-color: var(--color-bg-light);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    max-width: 100%;
-    max-height: 82vh;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    max-width: 900px;
+    width: 88vw;
+    max-height: 85vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    position: relative;
+    border: 1px solid var(--color-identity);
 }
 
-.lightbox-content img {
-    max-width: 90vw;
-    max-height: 75vh;
+.modal-card-media {
+    flex: 1 1 100%;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    min-height: 280px;
+    transition: flex 0.3s ease;
+}
+
+.modal-card.has-data .modal-card-media {
+    flex: 0 0 58%;
+}
+
+.modal-card-media img {
+    max-width: 100%;
+    max-height: 80vh;
     object-fit: contain;
     display: block;
     transition: opacity 0.2s ease;
 }
 
-.lightbox-content img.fade-out {
+.modal-card-media img.fade-out {
     opacity: 0.2;
 }
 
-.lightbox-content figcaption {
-    padding: 0.8rem 1rem;
+.modal-card-info {
+    flex: 0 0 42%;
+    padding: 2rem;
+    background-color: var(--color-bg-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+.modal-card:not(.has-data) .modal-card-info {
+    display: none;
+}
+
+.modal-specimen-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-identity);
+}
+
+.modal-caption-fallback {
     font-size: 1rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--color-primary);
+}
+
+.modal-specimen-data {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-data-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-data-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+}
+
+.modal-data-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.modal-divider {
+    border: none;
+    border-top: 1px solid var(--color-identity);
+    margin: 1rem 0 1.25rem 0;
+}
+
+.modal-cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-secondary);
+    color: var(--color-bg-brand);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-headings);
+    font-size: 0.95rem;
+    font-weight: 700;
     text-align: center;
-    background-color: #262626;
-    border-top: 1px solid #333;
+    transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.modal-cta-button:hover,
+.modal-cta-button:focus {
+    filter: brightness(0.9);
+    transform: translateY(-2px);
+    color: var(--color-bg-brand);
+}
+
+@media (max-width: 768px) {
+    .modal-card {
+        flex-direction: column;
+        max-height: 88vh;
+        width: 92vw;
+        overflow-y: auto;
+    }
+
+    .modal-card.has-data .modal-card-media,
+    .modal-card-media {
+        flex: 0 0 auto;
+        height: 250px;
+        min-height: 200px;
+    }
+
+    .modal-card-info {
+        flex: 1 1 auto;
+        padding: 1.25rem;
+    }
+
+    .modal-specimen-name {
+        font-size: 1.4rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .modal-grid {
+        gap: 0.75rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .modal-cta-button {
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+    }
 }
 
 .lightbox-nav {

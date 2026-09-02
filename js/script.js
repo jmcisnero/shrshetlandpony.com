@@ -268,13 +268,60 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!card || !lightboxImg) return;
         const img = card.querySelector('img');
         const figcaption = card.querySelector('figcaption');
+        const title = card.querySelector('.specimen-title');
         if (!img) return;
+
+        const modalCard = document.getElementById('modal-card');
+        const specimenName = document.getElementById('modal-specimen-name');
+        const specimenDataPanel = document.getElementById('modal-specimen-data');
+        const valNacimiento = document.getElementById('modal-val-nacimiento');
+        const valRp = document.getElementById('modal-val-rp');
+        const valHbu = document.getElementById('modal-val-hbu');
+        const valPelo = document.getElementById('modal-val-pelo');
+        const aruCta = document.getElementById('modal-aru-cta');
 
         lightboxImg.classList.add('fade-out');
         setTimeout(() => {
             lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt || (figcaption ? figcaption.textContent : 'Poni Shetland');
-            lightboxCaption.textContent = figcaption ? figcaption.textContent : '';
+
+            // Leer atributos de datos data-*
+            const nombre = img.dataset.nombre || (title ? title.textContent : (figcaption ? figcaption.textContent : ''));
+            const nacimiento = img.dataset.nacimiento;
+            const rp = img.dataset.rp;
+            const hbu = img.dataset.hbu;
+            const pelo = img.dataset.pelo;
+            const aruLink = img.dataset.aruLink;
+
+            const captionText = figcaption ? figcaption.textContent : (title ? title.textContent : 'Poni Shetland');
+            lightboxImg.alt = img.alt || nombre || captionText;
+
+            if (hbu && nombre) {
+                if (specimenName) specimenName.textContent = nombre;
+                if (valNacimiento) valNacimiento.textContent = nacimiento || '-';
+                if (valRp) valRp.textContent = rp || '-';
+                if (valHbu) valHbu.textContent = hbu || '-';
+                if (valPelo) valPelo.textContent = pelo || '-';
+                if (aruCta) aruCta.href = aruLink || '#';
+
+                if (specimenDataPanel) specimenDataPanel.style.display = 'block';
+                if (lightboxCaption) lightboxCaption.style.display = 'none';
+                if (modalCard) modalCard.classList.add('has-data');
+            } else {
+                if (specimenDataPanel) specimenDataPanel.style.display = 'none';
+                if (specimenName) specimenName.textContent = captionText;
+                if (lightboxCaption) {
+                    lightboxCaption.textContent = captionText;
+                    lightboxCaption.style.display = 'block';
+                }
+                if (modalCard) {
+                    if (captionText) {
+                        modalCard.classList.add('has-data');
+                    } else {
+                        modalCard.classList.remove('has-data');
+                    }
+                }
+            }
+
             lightboxImg.classList.remove('fade-out');
         }, 150);
     };
@@ -316,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const gallerySection = document.getElementById('galeria');
     if (gallerySection) {
         gallerySection.addEventListener('click', (e) => {
+            if (e.target.closest('a')) return;
             const card = e.target.closest('.gallery-card');
             if (card) {
                 const parentGrid = card.closest('.gallery-grid');
