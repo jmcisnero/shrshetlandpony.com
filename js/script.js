@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessageLabel: "Tu Mensaje",
             formMessage: "Tu Mensaje",
             formButton: "Enviar Consulta",
-            footerText: "© 2019 Cabaña SHR. Todos los derechos reservados."
+            footerText: "© 2019 Cabaña SHR. Todos los derechos reservados.",
+            verFicha: "Ver ficha"
         },
         en: {
             pageTitle: "Cabaña SHR - Shetland Pony Breeding in Uruguay",
@@ -83,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessageLabel: "Your Message",
             formMessage: "Your Message",
             formButton: "Send Inquiry",
-            footerText: "© 2019 Cabaña SHR. All rights reserved."
+            footerText: "© 2019 Cabaña SHR. All rights reserved.",
+            verFicha: "View details"
         },
         pt: {
             pageTitle: "Cabaña SHR - Criação de Pôneis Shetland no Uruguai",
@@ -125,8 +127,15 @@ document.addEventListener('DOMContentLoaded', () => {
             formMessageLabel: "Sua Mensagem",
             formMessage: "Sua Mensagem",
             formButton: "Enviar Consulta",
-            footerText: "© 2019 Cabaña SHR. Todos os direitos reservados."
+            footerText: "© 2019 Cabaña SHR. Todos os direitos reservados.",
+            verFicha: "Ver ficha"
         }
+    };
+
+    const normalizeBrandName = (name) => {
+        if (!name) return '';
+        let clean = name.replace(/Ver ficha.*/i, '').trim();
+        return clean.replace(/^Shr\b/i, 'SHR').replace(/^Bb\b/i, 'BB');
     };
 
     const langSwitcher = document.querySelector('.lang-switcher');
@@ -146,7 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (translations[lang][key]) {
                 const icon = elem.querySelector('i');
                 if (icon) {
-                    elem.childNodes[0].textContent = translations[lang][key] + ' ';
+                    // Preservar icono sin romper elementos hijo
+                    const textNode = Array.from(elem.childNodes).find(n => n.nodeType === Node.TEXT_NODE);
+                    if (textNode) {
+                        textNode.textContent = ' ' + translations[lang][key];
+                    } else {
+                        elem.appendChild(document.createTextNode(' ' + translations[lang][key]));
+                    }
                 } else {
                     elem.textContent = translations[lang][key];
                 }
@@ -274,51 +289,132 @@ document.addEventListener('DOMContentLoaded', () => {
         const modalCard = document.getElementById('modal-card');
         const specimenName = document.getElementById('modal-specimen-name');
         const specimenDataPanel = document.getElementById('modal-specimen-data');
+        const itemNacimiento = document.getElementById('modal-item-nacimiento');
+        const itemRp = document.getElementById('modal-item-rp');
+        const itemHbu = document.getElementById('modal-item-hbu');
+        const itemPelo = document.getElementById('modal-item-pelo');
         const valNacimiento = document.getElementById('modal-val-nacimiento');
         const valRp = document.getElementById('modal-val-rp');
         const valHbu = document.getElementById('modal-val-hbu');
         const valPelo = document.getElementById('modal-val-pelo');
         const aruCta = document.getElementById('modal-aru-cta');
+        const pendingNotice = document.getElementById('modal-pending-data');
 
         lightboxImg.classList.add('fade-out');
         setTimeout(() => {
             lightboxImg.src = img.src;
 
-            // Leer atributos de datos data-*
-            const nombre = img.dataset.nombre || (title ? title.textContent : (figcaption ? figcaption.textContent : ''));
-            const nacimiento = img.dataset.nacimiento;
-            const rp = img.dataset.rp;
-            const hbu = img.dataset.hbu;
-            const pelo = img.dataset.pelo;
-            const aruLink = img.dataset.aruLink;
+            // Extraer el nombre del ejemplar de forma limpia y normalizada (SHR)
+            const rawNombre = img.dataset.nombre || (title ? title.textContent : (figcaption ? figcaption.querySelector('.specimen-name')?.textContent || figcaption.textContent : ''));
+            const cleanNombre = normalizeBrandName(rawNombre) || 'Poni Shetland';
 
-            const captionText = figcaption ? figcaption.textContent : (title ? title.textContent : 'Poni Shetland');
-            lightboxImg.alt = img.alt || nombre || captionText;
+            const nacimiento = (img.dataset.nacimiento || '').trim();
+            const rp = (img.dataset.rp || '').trim();
+            const hbu = (img.dataset.hbu || '').trim();
+            const pelo = (img.dataset.pelo || '').trim();
+            const aruLink = (img.dataset.aruLink || '').trim();
 
-            if (hbu && nombre) {
-                if (specimenName) specimenName.textContent = nombre;
-                if (valNacimiento) valNacimiento.textContent = nacimiento || '-';
-                if (valRp) valRp.textContent = rp || '-';
-                if (valHbu) valHbu.textContent = hbu || '-';
-                if (valPelo) valPelo.textContent = pelo || '-';
-                if (aruCta) aruCta.href = aruLink || '#';
+            lightboxImg.alt = img.alt || cleanNombre;
+            if (specimenName) specimenName.textContent = cleanNombre;
 
-                if (specimenDataPanel) specimenDataPanel.style.display = 'block';
-                if (lightboxCaption) lightboxCaption.style.display = 'none';
-                if (modalCard) modalCard.classList.add('has-data');
-            } else {
-                if (specimenDataPanel) specimenDataPanel.style.display = 'none';
-                if (specimenName) specimenName.textContent = captionText;
-                if (lightboxCaption) {
-                    lightboxCaption.textContent = captionText;
-                    lightboxCaption.style.display = 'block';
-                }
+            const hasAruLink = Boolean(aruLink && aruLink !== '#');
+            const hasDataFields = Boolean(nacimiento || rp || hbu || pelo);
+
+            if (hasDataFields || hasAruLink) {
                 if (modalCard) {
-                    if (captionText) {
-                        modalCard.classList.add('has-data');
+                    modalCard.classList.remove('no-data');
+                    modalCard.classList.add('has-data');
+                }
+                if (specimenDataPanel) specimenDataPanel.style.display = 'block';
+                if (pendingNotice) pendingNotice.style.display = 'none';
+
+                // Gestionar visibilidad de cada ítem de datos (ocultar etiquetas sin valor)
+                if (valNacimiento && itemNacimiento) {
+                    if (nacimiento) {
+                        valNacimiento.textContent = nacimiento;
+                        itemNacimiento.style.display = 'flex';
                     } else {
-                        modalCard.classList.remove('has-data');
+                        itemNacimiento.style.display = 'none';
                     }
+                }
+                if (valRp && itemRp) {
+                    if (rp) {
+                        valRp.textContent = rp;
+                        itemRp.style.display = 'flex';
+                    } else {
+                        itemRp.style.display = 'none';
+                    }
+                }
+                if (valHbu && itemHbu) {
+                    if (hbu) {
+                        valHbu.textContent = hbu;
+                        itemHbu.style.display = 'flex';
+                    } else {
+                        itemHbu.style.display = 'none';
+                    }
+                }
+                if (valPelo && itemPelo) {
+                    if (pelo) {
+                        valPelo.textContent = pelo;
+                        itemPelo.style.display = 'flex';
+                    } else {
+                        itemPelo.style.display = 'none';
+                    }
+                }
+
+                // Botón hacia el registro ARU
+                if (aruCta) {
+                    if (hasAruLink) {
+                        aruCta.href = aruLink;
+                        aruCta.style.display = 'inline-flex';
+                    } else {
+                        aruCta.style.display = 'none';
+                    }
+                }
+            } else {
+                // Opción A: Sin datos de pedigree -> Desactivar/eliminar panel lateral por completo
+                if (modalCard) {
+                    modalCard.classList.remove('has-data');
+                    modalCard.classList.add('no-data');
+                }
+                if (specimenDataPanel) specimenDataPanel.style.display = 'none';
+                if (pendingNotice) pendingNotice.style.display = 'none';
+            }
+
+            // Galería de miniaturas multi-foto
+            const photosAttr = (img.dataset.photos || '').trim();
+            const photosList = photosAttr ? photosAttr.split(',').map(p => p.trim()) : [img.src];
+            
+            let thumbsContainer = document.getElementById('modal-thumbnails');
+            if (!thumbsContainer) {
+                const mediaDiv = document.querySelector('.modal-card-media');
+                if (mediaDiv) {
+                    thumbsContainer = document.createElement('div');
+                    thumbsContainer.id = 'modal-thumbnails';
+                    thumbsContainer.className = 'modal-thumbnails';
+                    mediaDiv.appendChild(thumbsContainer);
+                }
+            }
+
+            if (thumbsContainer) {
+                thumbsContainer.innerHTML = '';
+                if (photosList.length > 1) {
+                    thumbsContainer.style.display = 'flex';
+                    photosList.forEach((photoSrc, pIdx) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'modal-thumb-btn' + (photoSrc === img.src || pIdx === 0 ? ' active' : '');
+                        btn.setAttribute('aria-label', `Foto ${pIdx + 1}`);
+                        btn.innerHTML = `<img src="${photoSrc}" alt="Miniatura ${pIdx + 1}" />`;
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            lightboxImg.src = photoSrc;
+                            thumbsContainer.querySelectorAll('.modal-thumb-btn').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
+                        });
+                        thumbsContainer.appendChild(btn);
+                    });
+                } else {
+                    thumbsContainer.style.display = 'none';
                 }
             }
 
