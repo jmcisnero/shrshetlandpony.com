@@ -3,7 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let lightbox = null;
     let currentCategoryCards = [];
     let currentCardIndex = -1;
+    let currentCard = null;
+    let modalHistory = [];
     let updateLightboxContent = () => {};
+    let updateModalHistoryUI = () => {};
 
     // --- DICCIONARIO DE TRADUCCIONES ---
     const translations = {
@@ -63,7 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
             labelPelo: "Pelaje:",
             btnAru: "Ver Registro Oficial en ARU",
             unregistered: "Ejemplar no inscripto",
-            pendingData: "Ficha técnica en proceso de registro"
+            pendingData: "Ficha técnica en proceso de registro",
+            labelPadre: "Padre:",
+            labelMadre: "Madre:",
+            backTo: "← Volver a {nombre}",
+            back: "← Volver"
         },
         en: {
             pageTitle: "Cabaña SHR - Shetland Pony Breeding in Uruguay",
@@ -121,7 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
             labelPelo: "Coat Color:",
             btnAru: "View Official Pedigree (ARU)",
             unregistered: "Unregistered specimen",
-            pendingData: "Technical registration in progress"
+            pendingData: "Technical registration in progress",
+            labelPadre: "Sire:",
+            labelMadre: "Dam:",
+            backTo: "← Back to {nombre}",
+            back: "← Back"
         },
         pt: {
             pageTitle: "Cabaña SHR - Criação de Pôneis Shetland no Uruguai",
@@ -179,7 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
             labelPelo: "Pelagem:",
             btnAru: "Ver Registro Oficial no ARU",
             unregistered: "Exemplar não registrado",
-            pendingData: "Ficha técnica em processo de registro"
+            pendingData: "Ficha técnica em processo de registro",
+            labelPadre: "Pai:",
+            labelMadre: "Mãe:",
+            backTo: "← Voltar para {nombre}",
+            back: "← Voltar"
         }
     };
 
@@ -224,6 +239,29 @@ document.addEventListener('DOMContentLoaded', () => {
             return coatTranslations[key][lang];
         }
         return val;
+    };
+
+    const findCardBySpecimenName = (name) => {
+        if (!name) return null;
+        const targetClean = normalizeBrandName(name).trim().toLowerCase();
+        const allCards = document.querySelectorAll('.gallery-card');
+        
+        for (const card of allCards) {
+            const img = card.querySelector('img');
+            const figcaption = card.querySelector('figcaption');
+            const rawNombre = img?.dataset.nombre || figcaption?.querySelector('.specimen-name')?.textContent || '';
+            const cardClean = normalizeBrandName(rawNombre).trim().toLowerCase();
+
+            if (!cardClean) continue;
+
+            if (cardClean === targetClean) return card;
+            if (targetClean.includes(cardClean) || cardClean.includes(targetClean)) return card;
+            
+            if ((targetClean.includes('lili') || targetClean.includes('lilí')) && cardClean.includes('lili')) return card;
+            if (targetClean.includes('tigra') && cardClean.includes('tigra')) return card;
+            if (targetClean.includes('tropero') && cardClean.includes('tropero')) return card;
+        }
+        return null;
     };
 
     const normalizeBrandName = (name) => {
@@ -281,8 +319,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Si el modal está activo en pantalla, actualizarlo inmediatamente al conmutar de idioma
-        if (lightbox && lightbox.classList.contains('active') && currentCategoryCards && currentCategoryCards.length > 0 && currentCardIndex >= 0) {
-            updateLightboxContent(currentCategoryCards[currentCardIndex]);
+        if (lightbox && lightbox.classList.contains('active') && currentCard) {
+            updateLightboxContent(currentCard);
+            updateModalHistoryUI();
         }
     };
 
@@ -375,8 +414,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxNextBtn = document.getElementById('lightbox-next-btn');
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
 
+    updateModalHistoryUI = () => {
+        const backBtn = document.getElementById('modal-back-btn');
+        const backText = document.getElementById('modal-back-text');
+
+        if (modalHistory.length > 0) {
+            if (lightboxPrevBtn) lightboxPrevBtn.style.display = 'none';
+            if (lightboxNextBtn) lightboxNextBtn.style.display = 'none';
+
+            if (backBtn && backText) {
+                const previousState = modalHistory[modalHistory.length - 1];
+                const prevCard = previousState.card;
+                const prevImg = prevCard?.querySelector('img');
+                const prevFigcaption = prevCard?.querySelector('figcaption');
+                const prevTitle = prevCard?.querySelector('.specimen-title');
+                const rawPrevName = prevImg?.dataset.nombre || (prevTitle ? prevTitle.textContent : (prevFigcaption ? prevFigcaption.querySelector('.specimen-name')?.textContent || prevFigcaption.textContent : ''));
+                const cleanPrevName = normalizeBrandName(rawPrevName) || '';
+
+                const currentLang = document.documentElement.lang || 'es';
+                const langDict = translations[currentLang] || translations.es;
+
+                if (cleanPrevName && langDict.backTo) {
+                    backText.textContent = langDict.backTo.replace('{nombre}', cleanPrevName);
+                } else {
+                    backText.textContent = langDict.back || '← Volver';
+                }
+
+                backBtn.style.display = 'inline-flex';
+            }
+        } else {
+            const hasMultipleCards = currentCategoryCards && currentCategoryCards.length > 1;
+            if (lightboxPrevBtn) lightboxPrevBtn.style.display = hasMultipleCards ? 'flex' : 'none';
+            if (lightboxNextBtn) lightboxNextBtn.style.display = hasMultipleCards ? 'flex' : 'none';
+
+            if (backBtn) backBtn.style.display = 'none';
+        }
+    };
+
     updateLightboxContent = (card) => {
         if (!card || !lightboxImg) return;
+        currentCard = card;
         const img = card.querySelector('img');
         const figcaption = card.querySelector('figcaption');
         const title = card.querySelector('.specimen-title');
@@ -413,6 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const sexo = (img.dataset.sexo || '').trim();
             const hbu = (img.dataset.hbu || '').trim();
             const pelo = (img.dataset.pelo || '').trim();
+            const padre = (img.dataset.padre || '').trim();
+            const madre = (img.dataset.madre || '').trim();
             const aruLink = (img.dataset.aruLink || '').trim();
             const isEnVenta = img.dataset.enVenta === 'true' || (card && card.dataset.enVenta === 'true');
 
@@ -435,7 +514,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const hasAruLink = Boolean(aruLink && aruLink !== '#');
-            const hasDataFields = Boolean(nacimiento || rp || sexo || hbu || pelo);
+            const hasDataFields = Boolean(nacimiento || rp || sexo || hbu || pelo || padre || madre);
 
             if (hasDataFields || hasAruLink || isEnVenta) {
                 if (modalCard) {
@@ -507,6 +586,58 @@ document.addEventListener('DOMContentLoaded', () => {
                         itemPelo.style.display = 'none';
                     }
                 }
+
+                // Renderizar Padre y Madre con navegación interactiva
+                const itemPadre = document.getElementById('modal-item-padre');
+                const itemMadre = document.getElementById('modal-item-madre');
+                const valPadre = document.getElementById('modal-val-padre');
+                const valMadre = document.getElementById('modal-val-madre');
+                const lblPadre = document.querySelector('#modal-item-padre .modal-data-label');
+                const lblMadre = document.querySelector('#modal-item-madre .modal-data-label');
+
+                if (lblPadre && translations[currentLang]?.labelPadre) lblPadre.textContent = translations[currentLang].labelPadre;
+                if (lblMadre && translations[currentLang]?.labelMadre) lblMadre.textContent = translations[currentLang].labelMadre;
+
+                const renderPedigreeValue = (valContainer, itemContainer, specName) => {
+                    if (!valContainer || !itemContainer) return;
+                    if (specName) {
+                        valContainer.innerHTML = '';
+                        const targetCard = findCardBySpecimenName(specName);
+                        if (targetCard) {
+                            const linkSpan = document.createElement('span');
+                            linkSpan.className = 'pedigree-link';
+                            linkSpan.textContent = specName;
+                            linkSpan.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                if (!currentCard) return;
+
+                                modalHistory.push({
+                                    card: currentCard,
+                                    categoryCards: currentCategoryCards,
+                                    cardIndex: currentCardIndex
+                                });
+
+                                const parentGrid = targetCard.closest('.gallery-grid');
+                                if (parentGrid) {
+                                    currentCategoryCards = Array.from(parentGrid.querySelectorAll('.gallery-card'));
+                                    currentCardIndex = currentCategoryCards.indexOf(targetCard);
+                                }
+                                currentCard = targetCard;
+                                updateLightboxContent(targetCard);
+                                updateModalHistoryUI();
+                            });
+                            valContainer.appendChild(linkSpan);
+                        } else {
+                            valContainer.textContent = specName;
+                        }
+                        itemContainer.style.display = 'flex';
+                    } else {
+                        itemContainer.style.display = 'none';
+                    }
+                };
+
+                renderPedigreeValue(valPadre, itemPadre, padre);
+                renderPedigreeValue(valMadre, itemMadre, madre);
 
                 // Control condicional del botón ARU, botón de consulta y el separador
                 let showDivider = false;
@@ -587,10 +718,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const openLightbox = (card, categoryCards, index) => {
         if (!lightbox || !card) return;
+        modalHistory = [];
         currentCategoryCards = categoryCards;
         currentCardIndex = index;
+        currentCard = card;
 
         updateLightboxContent(card);
+        updateModalHistoryUI();
+
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
@@ -604,6 +739,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('modal-open');
         currentCategoryCards = [];
         currentCardIndex = -1;
+        currentCard = null;
+        modalHistory = [];
+
+        const backBtn = document.getElementById('modal-back-btn');
+        if (backBtn) backBtn.style.display = 'none';
+
+        if (lightboxPrevBtn) lightboxPrevBtn.style.display = '';
+        if (lightboxNextBtn) lightboxNextBtn.style.display = '';
+
         setTimeout(() => {
             if (lightboxImg) lightboxImg.src = '';
         }, 300);
@@ -634,6 +778,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     openLightbox(card, [card], 0);
                 }
             }
+        });
+    }
+
+    const modalBackBtn = document.getElementById('modal-back-btn');
+    if (modalBackBtn) {
+        modalBackBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (modalHistory.length === 0) return;
+            const previousState = modalHistory.pop();
+
+            currentCard = previousState.card;
+            currentCategoryCards = previousState.categoryCards;
+            currentCardIndex = previousState.cardIndex;
+
+            updateLightboxContent(currentCard);
+            updateModalHistoryUI();
         });
     }
 
