@@ -291,13 +291,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const specimenDataPanel = document.getElementById('modal-specimen-data');
         const itemNacimiento = document.getElementById('modal-item-nacimiento');
         const itemRp = document.getElementById('modal-item-rp');
+        const itemSexo = document.getElementById('modal-item-sexo');
         const itemHbu = document.getElementById('modal-item-hbu');
         const itemPelo = document.getElementById('modal-item-pelo');
         const valNacimiento = document.getElementById('modal-val-nacimiento');
         const valRp = document.getElementById('modal-val-rp');
+        const valSexo = document.getElementById('modal-val-sexo');
         const valHbu = document.getElementById('modal-val-hbu');
         const valPelo = document.getElementById('modal-val-pelo');
         const aruCta = document.getElementById('modal-aru-cta');
+        const modalDivider = document.getElementById('modal-divider');
         const pendingNotice = document.getElementById('modal-pending-data');
 
         lightboxImg.classList.add('fade-out');
@@ -310,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const nacimiento = (img.dataset.nacimiento || '').trim();
             const rp = (img.dataset.rp || '').trim();
+            const sexo = (img.dataset.sexo || '').trim();
             const hbu = (img.dataset.hbu || '').trim();
             const pelo = (img.dataset.pelo || '').trim();
             const aruLink = (img.dataset.aruLink || '').trim();
@@ -318,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (specimenName) specimenName.textContent = cleanNombre;
 
             const hasAruLink = Boolean(aruLink && aruLink !== '#');
-            const hasDataFields = Boolean(nacimiento || rp || hbu || pelo);
+            const hasDataFields = Boolean(nacimiento || rp || sexo || hbu || pelo);
 
             if (hasDataFields || hasAruLink) {
                 if (modalCard) {
@@ -345,9 +349,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         itemRp.style.display = 'none';
                     }
                 }
+                if (valSexo && itemSexo) {
+                    if (sexo) {
+                        valSexo.textContent = sexo;
+                        itemSexo.style.display = 'flex';
+                    } else {
+                        itemSexo.style.display = 'none';
+                    }
+                }
                 if (valHbu && itemHbu) {
                     if (hbu) {
                         valHbu.textContent = hbu;
+                        valHbu.classList.toggle('unregistered', hbu === 'Ejemplar no inscripto');
                         itemHbu.style.display = 'flex';
                     } else {
                         itemHbu.style.display = 'none';
@@ -362,13 +375,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // Botón hacia el registro ARU
+                // Control condicional del botón ARU y el separador
                 if (aruCta) {
                     if (hasAruLink) {
                         aruCta.href = aruLink;
                         aruCta.style.display = 'inline-flex';
+                        if (modalDivider) modalDivider.style.display = 'block';
                     } else {
                         aruCta.style.display = 'none';
+                        if (modalDivider) modalDivider.style.display = 'none';
                     }
                 }
             } else {

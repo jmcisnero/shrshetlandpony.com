@@ -1150,6 +1150,12 @@ body.modal-open {
     color: var(--color-primary);
 }
 
+.modal-data-value.unregistered {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
 .modal-divider {
     border: none;
     border-top: 1px solid var(--color-identity);
