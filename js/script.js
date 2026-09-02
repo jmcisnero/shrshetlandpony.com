@@ -252,18 +252,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- VISOR DE IMÁGENES EN GRANDE (LIGHTBOX MODAL) ---
+    // --- VISOR DE IMÁGENES EN GRANDE (LIGHTBOX MODAL CON NAVEGACIÓN POR CATEGORÍA) ---
     const lightbox = document.getElementById('image-lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
     const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxPrevBtn = document.getElementById('lightbox-prev-btn');
+    const lightboxNextBtn = document.getElementById('lightbox-next-btn');
     const lightboxOverlay = document.querySelector('.lightbox-overlay');
 
-    const openLightbox = (imgSrc, captionText, altText) => {
-        if (!lightbox || !lightboxImg) return;
-        lightboxImg.src = imgSrc;
-        lightboxImg.alt = altText || captionText || 'Poni Shetland';
-        lightboxCaption.textContent = captionText || '';
+    let currentCategoryCards = [];
+    let currentCardIndex = -1;
+
+    const updateLightboxContent = (card) => {
+        if (!card || !lightboxImg) return;
+        const img = card.querySelector('img');
+        const figcaption = card.querySelector('figcaption');
+        if (!img) return;
+
+        lightboxImg.classList.add('fade-out');
+        setTimeout(() => {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt || (figcaption ? figcaption.textContent : 'Poni Shetland');
+            lightboxCaption.textContent = figcaption ? figcaption.textContent : '';
+            lightboxImg.classList.remove('fade-out');
+        }, 150);
+    };
+
+    const openLightbox = (card, categoryCards, index) => {
+        if (!lightbox || !card) return;
+        currentCategoryCards = categoryCards;
+        currentCardIndex = index;
+
+        updateLightboxContent(card);
         lightbox.classList.add('active');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
@@ -275,9 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
+        currentCategoryCards = [];
+        currentCardIndex = -1;
         setTimeout(() => {
             if (lightboxImg) lightboxImg.src = '';
         }, 300);
+    };
+
+    const navigateLightbox = (direction) => {
+        if (!currentCategoryCards || currentCategoryCards.length <= 1) return;
+        if (direction === 'next') {
+            currentCardIndex = (currentCardIndex + 1) % currentCategoryCards.length;
+        } else if (direction === 'prev') {
+            currentCardIndex = (currentCardIndex - 1 + currentCategoryCards.length) % currentCategoryCards.length;
+        }
+        updateLightboxContent(currentCategoryCards[currentCardIndex]);
     };
 
     const gallerySection = document.getElementById('galeria');
@@ -285,13 +318,13 @@ document.addEventListener('DOMContentLoaded', () => {
         gallerySection.addEventListener('click', (e) => {
             const card = e.target.closest('.gallery-card');
             if (card) {
-                const img = card.querySelector('img');
-                const figcaption = card.querySelector('figcaption');
-                if (img) {
-                    const imgSrc = img.src;
-                    const captionText = figcaption ? figcaption.textContent : '';
-                    const altText = img.alt || '';
-                    openLightbox(imgSrc, captionText, altText);
+                const parentGrid = card.closest('.gallery-grid');
+                if (parentGrid) {
+                    const groupCards = Array.from(parentGrid.querySelectorAll('.gallery-card'));
+                    const cardIdx = groupCards.indexOf(card);
+                    openLightbox(card, groupCards, cardIdx);
+                } else {
+                    openLightbox(card, [card], 0);
                 }
             }
         });
@@ -299,16 +332,103 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
     if (lightboxOverlay) lightboxOverlay.addEventListener('click', closeLightbox);
+    if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', () => navigateLightbox('prev'));
+    if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', () => navigateLightbox('next'));
 
-    // Tecla Escape para cerrar Lightbox o Menú Móvil
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (lightbox && lightbox.classList.contains('active')) {
-                closeLightbox();
-            } else if (navMenu && navMenu.classList.contains('active')) {
-                toggleMenu(false);
-                if (menuToggle) menuToggle.focus();
+    // Soporte para gestos táctiles (Swipe) en móvil
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    if (lightbox) {
+        lightbox.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        lightbox.addEventListener('touchend', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX < 0) {
+                    navigateLightbox('next');
+                } else {
+                    navigateLightbox('prev');
+                }
             }
+        }, { passive: true });
+    }
+
+    // Navegación por teclado (Flechas izquierda, derecha, Escape)
+    document.addEventListener('keydown', (e) => {
+        if (lightbox && lightbox.classList.contains('active')) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            } else if (e.key === 'ArrowLeft') {
+                navigateLightbox('prev');
+            } else if (e.key === 'ArrowRight') {
+                navigateLightbox('next');
+            }
+        } else if (e.key === 'Escape' && navMenu && navMenu.classList.contains('active')) {
+            toggleMenu(false);
+            if (menuToggle) menuToggle.focus();
         }
     });
+
+    // --- CARRUSEL DE FONDO DINÁMICO (HERO SLIDER) ---
+    const heroImages = [
+        'assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg',
+        'assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg',
+        'assets/images/madres/Madre - Brissa 2577.jpg',
+        'assets/images/madres/Madre - Canela 2598.jpg',
+        'assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg',
+        'assets/images/madres/Madre - Pulga 2583-2.jpg',
+        'assets/images/madres/Madre - SF Lili 2500.jpg',
+        'assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg',
+        'assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg',
+        'assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg',
+        'assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg'
+    ];
+
+    const initHeroSlider = () => {
+        const sliderContainer = document.getElementById('hero-slider');
+        if (!sliderContainer || heroImages.length === 0) return;
+
+        // Aleatorizar el orden de las imágenes en cada carga
+        const shuffled = [...heroImages].sort(() => Math.random() - 0.5);
+
+        sliderContainer.innerHTML = '';
+        const slides = shuffled.map((imgSrc, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
+            slide.style.backgroundImage = `url("${encodeURI(imgSrc)}")`;
+            sliderContainer.appendChild(slide);
+            return slide;
+        });
+
+        // Precargar la segunda imagen de la secuencia
+        if (shuffled.length > 1) {
+            const imgPreload = new Image();
+            imgPreload.src = shuffled[1];
+        }
+
+        let currentIndex = 0;
+        const intervalTime = 5000; // 5 segundos por slide
+
+        setInterval(() => {
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % slides.length;
+            slides[currentIndex].classList.add('active');
+
+            // Precargar la siguiente foto de la secuencia
+            const nextIndex = (currentIndex + 1) % slides.length;
+            const nextImg = new Image();
+            nextImg.src = shuffled[nextIndex];
+        }, intervalTime);
+    };
+
+    initHeroSlider();
 });

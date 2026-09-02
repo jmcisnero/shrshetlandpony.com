@@ -108,6 +108,7 @@
 
     <!-- Sección Hero -->
     <section id="inicio" class="hero">
+        <div class="hero-slider" id="hero-slider" aria-hidden="true"></div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 data-key="heroTitle">Cabaña SHR: El comienzo de una gran amistad.</h1>
@@ -366,6 +367,12 @@
         <div class="lightbox-overlay"></div>
         <div class="lightbox-container">
             <button class="lightbox-close" id="lightbox-close-btn" aria-label="Cerrar visor">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev-btn" aria-label="Imagen anterior">
+                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="lightbox-nav lightbox-next" id="lightbox-next-btn" aria-label="Imagen siguiente">
+                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            </button>
             <figure class="lightbox-content">
                 <img id="lightbox-img" src="" alt="">
                 <figcaption id="lightbox-caption"></figcaption>
