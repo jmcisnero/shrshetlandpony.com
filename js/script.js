@@ -845,19 +845,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- CARRUSEL DE FONDO DINÁMICO (HERO SLIDER CON PUNTOS FOCALES PERSONALIZADOS) ---
+    // --- CARRUSEL DE FONDO DINÁMICO (HERO SLIDER CON PUNTOS FOCALES PERSONALIZADOS Y TOP-ANCHOR) ---
     const heroImages = [
-        { src: 'assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/madres/Madre - Brissa 2577.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/madres/Madre - Canela 2598.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg', focalMobile: '20% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/madres/Madre - Pulga 2583-2.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/madres/Madre - SF Lili 2500.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg', focalMobile: '20% center', focalDesktop: 'center 18%' },
-        { src: 'assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' }
+        { src: 'assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Brissa 2577.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Canela 2598.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg', focalMobile: '15% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Pulga 2583-2.jpg', focalMobile: '75% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - SF Lili 2500.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg', focalMobile: '75% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg', focalMobile: '75% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg', focalMobile: '15% top', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg', focalMobile: '80% top', focalDesktop: 'center 18%' }
     ];
 
     const initHeroSlider = () => {

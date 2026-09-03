@@ -713,11 +713,11 @@ img {
         font-size: 2rem;
     }
     .hero {
-        min-height: 65vh;
-        height: 70vh;
-        max-height: 75vh;
-        padding-top: calc(var(--navbar-height) + 1.5rem);
-        padding-bottom: 2rem;
+        min-height: 50vh;
+        height: 55vh;
+        max-height: 60vh;
+        padding-top: calc(var(--navbar-height) + 1.25rem);
+        padding-bottom: 1.5rem;
     }
     .navbar .container {
         padding: 0 1rem;
@@ -778,27 +778,32 @@ img {
     .content-section {
         padding: 3rem 0;
     }
-    /* 1. SECCIÓN HERO EN MÓVIL */
+    /* 1. SECCIÓN HERO EN MÓVIL (Top-Anchor & Despeje del Header) */
     .hero {
-        min-height: 65vh;
-        height: 70vh;
-        max-height: 75vh;
-        padding-top: calc(var(--navbar-height) + 1rem);
-        padding-bottom: 2rem;
+        min-height: 45vh;
+        height: 48vh;
+        max-height: 52vh;
+        padding-top: calc(var(--navbar-height) + 0.75rem);
+        padding-bottom: 1.25rem;
+    }
+    .hero-slider,
+    .hero-overlay {
+        top: var(--navbar-height);
+        height: calc(100% - var(--navbar-height));
     }
     .hero-content {
-        margin-bottom: 0.75rem;
-        padding: 0 1rem;
+        margin-bottom: 0.5rem;
+        padding: 0 0.75rem;
     }
     .hero h1 {
-        font-size: 1.65rem;
-        margin-bottom: 1.25rem;
+        font-size: 1.35rem;
+        margin-bottom: 0.75rem;
         line-height: 1.25;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
     }
     .cta-button {
-        padding: 0.7rem 1.8rem;
-        font-size: 1rem;
+        padding: 0.5rem 1.4rem;
+        font-size: 0.9rem;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
@@ -841,22 +846,23 @@ img {
         padding: 2.5rem 0;
     }
     .hero {
-        min-height: 65vh;
-        height: 70vh;
-        max-height: 75vh;
-        padding-top: calc(var(--navbar-height) + 0.75rem);
-        padding-bottom: 1.5rem;
+        min-height: 42vh;
+        height: 45vh;
+        max-height: 48vh;
+        padding-top: calc(var(--navbar-height) + 0.5rem);
+        padding-bottom: 1rem;
     }
     .hero-content {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
     }
     .hero h1 {
-        font-size: 1.45rem;
-        margin-bottom: 1rem;
+        font-size: 1.25rem;
+        margin-bottom: 0.6rem;
+        line-height: 1.22;
     }
     .cta-button {
-        padding: 0.65rem 1.5rem;
-        font-size: 0.95rem;
+        padding: 0.45rem 1.25rem;
+        font-size: 0.88rem;
     }
     .benefits-grid {
         gap: 1.25rem;
