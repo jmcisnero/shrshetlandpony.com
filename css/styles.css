@@ -1066,6 +1066,13 @@ body.modal-open {
     position: relative;
     min-height: 280px;
     transition: flex 0.3s ease;
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.modal-card-media.is-zoomed {
+    cursor: zoom-out;
 }
 
 .modal-card.has-data .modal-card-media {
@@ -1077,11 +1084,49 @@ body.modal-open {
     max-height: 80vh;
     object-fit: contain;
     display: block;
-    transition: opacity 0.2s ease;
+    transform-origin: center center;
+    transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
+    will-change: transform, transform-origin;
+    -webkit-user-drag: none;
 }
 
 .modal-card-media img.fade-out {
     opacity: 0.2;
+}
+
+/* Indicador visual de Zoom */
+.modal-zoom-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: #ffffff;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    pointer-events: none;
+    transition: all 0.25s ease;
+    opacity: 0.85;
+}
+
+.modal-card-media:hover .modal-zoom-badge {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.modal-card-media.is-zoomed .modal-zoom-badge {
+    background-color: var(--color-secondary);
+    color: var(--color-bg-brand);
+    opacity: 1;
 }
 
 .modal-card-info {

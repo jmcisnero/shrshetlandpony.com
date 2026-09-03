@@ -701,6 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         btn.innerHTML = `<img src="${photoSrc}" alt="Miniatura ${pIdx + 1}" />`;
                         btn.addEventListener('click', (e) => {
                             e.stopPropagation();
+                            resetModalZoom();
                             lightboxImg.src = photoSrc;
                             thumbsContainer.querySelectorAll('.modal-thumb-btn').forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
@@ -716,8 +717,99 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 150);
     };
 
+    // --- LÓGICA DE ZOOM INTERACTIVO Y PANEO EN FOTO DEL MODAL ---
+    let isModalZoomed = false;
+    const modalZoomScale = 2.2;
+    let lastTouchTime = 0;
+
+    const resetModalZoom = () => {
+        isModalZoomed = false;
+        if (lightboxImg) {
+            lightboxImg.style.transform = 'scale(1)';
+            lightboxImg.style.transformOrigin = 'center center';
+        }
+        const mediaContainer = document.querySelector('.modal-card-media');
+        if (mediaContainer) {
+            mediaContainer.classList.remove('is-zoomed');
+        }
+        const zoomBadge = document.getElementById('modal-zoom-badge');
+        if (zoomBadge) {
+            zoomBadge.innerHTML = '<i class="fas fa-search-plus" aria-hidden="true"></i>';
+        }
+    };
+
+    const updateZoomOrigin = (clientX, clientY, container) => {
+        if (!lightboxImg || !container) return;
+        const rect = container.getBoundingClientRect();
+        const relativeX = Math.max(0, Math.min(clientX - rect.left, rect.width));
+        const relativeY = Math.max(0, Math.min(clientY - rect.top, rect.height));
+        const originX = (relativeX / rect.width) * 100;
+        const originY = (relativeY / rect.height) * 100;
+
+        requestAnimationFrame(() => {
+            lightboxImg.style.transformOrigin = `${originX.toFixed(2)}% ${originY.toFixed(2)}%`;
+        });
+    };
+
+    const toggleModalZoom = (clientX, clientY, container) => {
+        if (!lightboxImg || !container) return;
+        const zoomBadge = document.getElementById('modal-zoom-badge');
+
+        isModalZoomed = !isModalZoomed;
+
+        if (isModalZoomed) {
+            container.classList.add('is-zoomed');
+            updateZoomOrigin(clientX, clientY, container);
+            lightboxImg.style.transform = `scale(${modalZoomScale})`;
+            if (zoomBadge) {
+                zoomBadge.innerHTML = '<i class="fas fa-search-minus" aria-hidden="true"></i>';
+            }
+        } else {
+            resetModalZoom();
+        }
+    };
+
+    const modalMediaContainer = document.querySelector('.modal-card-media');
+    if (modalMediaContainer) {
+        // Clic en escritorio (Mouse)
+        modalMediaContainer.addEventListener('click', (e) => {
+            if (e.target.closest('#modal-thumbnails') || e.target.closest('.modal-thumb-btn')) return;
+            toggleModalZoom(e.clientX, e.clientY, modalMediaContainer);
+        });
+
+        // Movimiento de ratón para paneo fluido cuando el zoom está activo
+        modalMediaContainer.addEventListener('mousemove', (e) => {
+            if (!isModalZoomed) return;
+            updateZoomOrigin(e.clientX, e.clientY, modalMediaContainer);
+        });
+
+        // Soporte Táctil: Doble Tap y Paneo en Móvil
+        modalMediaContainer.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                const now = Date.now();
+                if (now - lastTouchTime < 300) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const touch = e.touches[0];
+                    toggleModalZoom(touch.clientX, touch.clientY, modalMediaContainer);
+                }
+                lastTouchTime = now;
+            }
+        }, { passive: false });
+
+        modalMediaContainer.addEventListener('touchmove', (e) => {
+            if (!isModalZoomed) return;
+            e.stopPropagation(); // Previene swipe del carrusel mientras está en zoom
+            if (e.touches.length === 1) {
+                const touch = e.touches[0];
+                updateZoomOrigin(touch.clientX, touch.clientY, modalMediaContainer);
+            }
+        }, { passive: false });
+    }
+
     const openLightbox = (card, categoryCards, index) => {
         if (!lightbox || !card) return;
+        resetModalZoom();
         modalHistory = [];
         currentCategoryCards = categoryCards;
         currentCardIndex = index;
@@ -734,6 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeLightbox = () => {
         if (!lightbox) return;
+        resetModalZoom();
         lightbox.classList.remove('active');
         lightbox.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('modal-open');
@@ -755,6 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const navigateLightbox = (direction) => {
         if (!currentCategoryCards || currentCategoryCards.length <= 1) return;
+        resetModalZoom();
         if (direction === 'next') {
             currentCardIndex = (currentCardIndex + 1) % currentCategoryCards.length;
         } else if (direction === 'prev') {
@@ -785,6 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modalBackBtn) {
         modalBackBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            resetModalZoom();
             if (modalHistory.length === 0) return;
             const previousState = modalHistory.pop();
 
@@ -814,6 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         lightbox.addEventListener('touchend', (e) => {
             if (!lightbox.classList.contains('active')) return;
+            if (isModalZoomed) return; // Desactivar swipe de slide cuando la foto tiene zoom activo
             const touchEndX = e.changedTouches[0].screenX;
             const touchEndY = e.changedTouches[0].screenY;
             const deltaX = touchEndX - touchStartX;
