@@ -719,9 +719,6 @@ img {
         padding-top: calc(var(--navbar-height) + 1.5rem);
         padding-bottom: 2rem;
     }
-    .hero-slide {
-        background-position: 80% center;
-    }
     .navbar .container {
         padding: 0 1rem;
     }
@@ -789,9 +786,6 @@ img {
         padding-top: calc(var(--navbar-height) + 1rem);
         padding-bottom: 2rem;
     }
-    .hero-slide {
-        background-position: 80% center;
-    }
     .hero-content {
         margin-bottom: 0.75rem;
         padding: 0 1rem;
@@ -852,9 +846,6 @@ img {
         max-height: 75vh;
         padding-top: calc(var(--navbar-height) + 0.75rem);
         padding-bottom: 1.5rem;
-    }
-    .hero-slide {
-        background-position: 80% center;
     }
     .hero-content {
         margin-bottom: 0.5rem;

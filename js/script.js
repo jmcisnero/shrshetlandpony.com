@@ -845,19 +845,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- CARRUSEL DE FONDO DINÁMICO (HERO SLIDER) ---
+    // --- CARRUSEL DE FONDO DINÁMICO (HERO SLIDER CON PUNTOS FOCALES PERSONALIZADOS) ---
     const heroImages = [
-        'assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg',
-        'assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg',
-        'assets/images/madres/Madre - Brissa 2577.jpg',
-        'assets/images/madres/Madre - Canela 2598.jpg',
-        'assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg',
-        'assets/images/madres/Madre - Pulga 2583-2.jpg',
-        'assets/images/madres/Madre - SF Lili 2500.jpg',
-        'assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg',
-        'assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg',
-        'assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg',
-        'assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg'
+        { src: 'assets/images/padrillos/Padrillo - BB Tropero (Cabron) 2667.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/padrillos/Padrillo - SHR Timoteo 2820.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Brissa 2577.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Canela 2598.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Mi Querencia Tigra 2703.jpg', focalMobile: '20% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - Pulga 2583-2.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/madres/Madre - SF Lili 2500.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/25/Gen25 - SHR Barullo 2523.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/25/Gen25 - SHR Toscana 2553.jpg', focalMobile: '75% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/24/Gen24 - SHR Canelon 2784.jpg', focalMobile: '20% center', focalDesktop: 'center 18%' },
+        { src: 'assets/images/generaciones/23/Gen23 - SHR Barbie 2757.jpg', focalMobile: '80% center', focalDesktop: 'center 18%' }
     ];
 
     const initHeroSlider = () => {
@@ -868,32 +868,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const shuffled = [...heroImages].sort(() => Math.random() - 0.5);
 
         sliderContainer.innerHTML = '';
-        const slides = shuffled.map((imgSrc, index) => {
+        const slides = shuffled.map((item, index) => {
             const slide = document.createElement('div');
             slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
-            slide.style.backgroundImage = `url("${encodeURI(imgSrc)}")`;
+            slide.style.backgroundImage = `url("${encodeURI(item.src)}")`;
             sliderContainer.appendChild(slide);
-            return slide;
+            return { element: slide, focalMobile: item.focalMobile, focalDesktop: item.focalDesktop, src: item.src };
         });
+
+        const updateFocalPoints = () => {
+            const isMobile = window.innerWidth <= 768;
+            slides.forEach(slideObj => {
+                slideObj.element.style.backgroundPosition = isMobile ? slideObj.focalMobile : slideObj.focalDesktop;
+            });
+        };
+
+        // Aplicar posiciones iniciales y en cambio de tamaño
+        updateFocalPoints();
+        window.addEventListener('resize', updateFocalPoints);
 
         // Precargar la segunda imagen de la secuencia
         if (shuffled.length > 1) {
             const imgPreload = new Image();
-            imgPreload.src = shuffled[1];
+            imgPreload.src = shuffled[1].src;
         }
 
         let currentIndex = 0;
         const intervalTime = 5000; // 5 segundos por slide
 
         setInterval(() => {
-            slides[currentIndex].classList.remove('active');
+            slides[currentIndex].element.classList.remove('active');
             currentIndex = (currentIndex + 1) % slides.length;
-            slides[currentIndex].classList.add('active');
+            slides[currentIndex].element.classList.add('active');
 
             // Precargar la siguiente foto de la secuencia
             const nextIndex = (currentIndex + 1) % slides.length;
             const nextImg = new Image();
-            nextImg.src = shuffled[nextIndex];
+            nextImg.src = shuffled[nextIndex].src;
         }, intervalTime);
     };
 
