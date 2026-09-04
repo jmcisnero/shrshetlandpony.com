@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const translations = {
         es: {
             pageTitle: "Cabaña SHR - Cría de Ponis Shetland en Uruguay",
+            brandSubline: "Shetland Pony · Uruguay",
             navHome: "Inicio",
             navPonies: "Nuestros Ponis",
             navBenefits: "Beneficios",
@@ -74,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         en: {
             pageTitle: "Cabaña SHR - Shetland Pony Breeding in Uruguay",
+            brandSubline: "Shetland Pony · Uruguay",
             navHome: "Home",
             navPonies: "Our Ponies",
             navBenefits: "Benefits",
@@ -136,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         pt: {
             pageTitle: "Cabaña SHR - Criação de Pôneis Shetland no Uruguai",
+            brandSubline: "Shetland Pony · Uruguai",
             navHome: "Início",
             navPonies: "Nossos Pôneis",
             navBenefits: "Benefícios",
