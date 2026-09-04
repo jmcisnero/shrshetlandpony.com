@@ -623,6 +623,27 @@ img {
     color: var(--color-text-muted);
 }
 
+/* ======== LAYOUT GENERACIONES INDIVIDUALES EN PARALELO ======== */
+.single-generations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.single-gen-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.single-gen-block .sub-category-title {
+    margin-top: 0;
+}
+
+.single-gen-block .gallery-grid {
+    margin-bottom: 0;
+}
+
 /* ======== SECCIÓN DE CONTACTO ======== */
 .contact-wrapper {
     display: grid;
