@@ -11,8 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DICCIONARIO DE TRADUCCIONES ---
     const translations = {
         es: {
-            pageTitle: "Cabaña SHR - Cría de Ponis Shetland en Uruguay",
+            pageTitle: "Cabaña SHR | El sello del Shetland Pony en Uruguay",
             brandSubline: "Shetland Pony · Uruguay",
+            brand_subline: "Shetland Pony · Uruguay",
+            heroEyebrow: "Genética · Pedigree · Mansedumbre",
+            hero_eyebrow: "Genética · Pedigree · Mansedumbre",
+            footerSeal: "El sello del Shetland Pony en Uruguay",
+            footer_seal: "El sello del Shetland Pony en Uruguay",
             navHome: "Inicio",
             navPonies: "Nuestros Ponis",
             navBenefits: "Beneficios",
@@ -75,8 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
             back: "← Volver"
         },
         en: {
-            pageTitle: "Cabaña SHR - Shetland Pony Breeding in Uruguay",
+            pageTitle: "Cabaña SHR | The Shetland Pony benchmark in Uruguay",
             brandSubline: "Shetland Pony · Uruguay",
+            brand_subline: "Shetland Pony · Uruguay",
+            heroEyebrow: "Genetics · Pedigree · Docility",
+            hero_eyebrow: "Genetics · Pedigree · Docility",
+            footerSeal: "The Shetland Pony benchmark in Uruguay",
+            footer_seal: "The Shetland Pony benchmark in Uruguay",
             navHome: "Home",
             navPonies: "Our Ponies",
             navBenefits: "Benefits",
@@ -139,8 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
             back: "← Back"
         },
         pt: {
-            pageTitle: "Cabaña SHR - Criação de Pôneis Shetland no Uruguai",
+            pageTitle: "Cabaña SHR | O selo do Shetland Pony no Uruguai",
             brandSubline: "Shetland Pony · Uruguai",
+            brand_subline: "Shetland Pony · Uruguai",
+            heroEyebrow: "Genética · Pedigree · Docilidade",
+            hero_eyebrow: "Genética · Pedigree · Docilidade",
+            footerSeal: "O selo do Shetland Pony no Uruguai",
+            footer_seal: "O selo do Shetland Pony no Uruguai",
             navHome: "Início",
             navPonies: "Nossos Pôneis",
             navBenefits: "Benefícios",
@@ -287,9 +302,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.title = translations[lang].pageTitle;
         }
 
-        // Actualizar textos por data-key
-        document.querySelectorAll('[data-key]').forEach(elem => {
-            const key = elem.getAttribute('data-key');
+        // Actualizar textos por data-key o data-i18n
+        document.querySelectorAll('[data-key], [data-i18n]').forEach(elem => {
+            const key = elem.getAttribute('data-key') || elem.getAttribute('data-i18n');
             if (translations[lang][key]) {
                 const icon = elem.querySelector('i');
                 if (icon) {
